@@ -188,4 +188,17 @@
 		</dependency>
 	</dependencies>
 
+<distributionManagement>
+               <repository>
+                       <id>release</id>
+                       <name>release</name>
+                       <url>http://wittyparrot.com:8080/nexus-2.3.1-01/content/repositories/acrowit-release</url>
+               </repository>
+               <snapshotRepository>
+                       <id>snapshot</id>
+                       <name>snapshot</name>
+                       <url>http://wittyparrot.com:8080/nexus-2.3.1-01/content/repositories/acrowit-snapshot</url>
+               </snapshotRepository>
+</distributionManagement>
+
 </project>

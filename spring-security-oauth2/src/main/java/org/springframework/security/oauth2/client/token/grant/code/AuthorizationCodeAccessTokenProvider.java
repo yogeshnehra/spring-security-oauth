@@ -62,6 +62,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseExtractor;
 
+import com.acrowit.acrodocx.transferobjects.ThreadLocalContext;
+
 /**
  * Provider for obtaining an oauth2 access token by using an authorization code.
  * 
@@ -237,6 +239,13 @@ public class AuthorizationCodeAccessTokenProvider extends OAuth2AccessTokenSuppo
 		else {
 			form.set("scope", OAuth2Utils.formatParameterList(resource.getScope()));
 		}
+		
+		System.out.println("  >>>>>>>>>>>>>>>>>> PPPPPPPP Setting url in redirect autherization");
+		String currentUser = ThreadLocalContext.get();
+		if(currentUser != null && "".equals(currentUser.trim())){
+			System.out.println("  >>>>>>>>>>>>>>>>>>  QQQQQQQQQQQ Setting url in redirect autherization " + currentUser);
+			form.set("user_id", currentUser);
+		}
 
 		// Extracting the redirect URI from a saved request should ignore the current URI, so it's not simply a call to
 		// resource.getRedirectUri()
@@ -274,6 +283,7 @@ public class AuthorizationCodeAccessTokenProvider extends OAuth2AccessTokenSuppo
 
 		// we don't have an authorization code yet. So first get that.
 		TreeMap<String, String> requestParameters = new TreeMap<String, String>();
+		
 		requestParameters.put("response_type", "code"); // oauth2 spec, section 3
 		requestParameters.put("client_id", resource.getClientId());
 		// Client secret is not required in the initial authorization request
@@ -283,6 +293,12 @@ public class AuthorizationCodeAccessTokenProvider extends OAuth2AccessTokenSuppo
 			throw new IllegalStateException("No redirect URI has been established for the current request.");
 		}
 		requestParameters.put("redirect_uri", redirectUri);
+		System.out.println("  >>>>>>>>>>>>>>>>>> PPPPPPPPPPPPP1111 Setting url in redirect autherization");
+		String currentUser = ThreadLocalContext.get();
+		if(currentUser != null && !"".equals(currentUser.trim())){
+			System.out.println("  >>>>>>>>>>>>>>>>>> QQQQQQQQQQ1111 Setting url in redirect autherization " + currentUser);
+			requestParameters.put("user_id", currentUser);
+		}	
 
 		if (resource.isScoped()) {
 
